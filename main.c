@@ -396,10 +396,10 @@ int printPbar(int p){   //Print the potentiometer's bar
     return x;
 }
  
-char CheckLRVolt(unsigned int x){
+int CheckLRVolt(unsigned int x){
     if(x>600)
-        return 'N';
-    else return 'Y';
+        return 0;
+    else return 1;
 }
  
 void CheckLR(){
@@ -518,7 +518,7 @@ clearScreen0();
     	sprintf(toprint,"Press up to return");
     	oledPutString(toprint, 1, 0,1);  
  	
-  		if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)
+  		if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1) //problemetic line
 		{
 			clearScreen0();
 			return 0;
@@ -618,10 +618,73 @@ while(1){
 }
 }
 
+void subMenu2() //potenciometer
+{
+    int i , z, pot;
+	unsigned char RA3='3',RA0='0'; // RA0 is Cancel and RA3 is accept
+	int currChoice=1;
+	clearScreen();
+while(1){
+    sprintf(toprint,"Sub menu 2");
+    oledPutString(toprint, 0, 0,1);  
+   
+ 	
+    for(i=1;i<6;i++)
+    {
+		if(i==5) sprintf(toprint, "SubSubMenu");
+	    else sprintf(toprint, "Execute operation %d",i);
+	 //   sprintf(toprint, "Execute operation %d",i);
+	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   	else oledPutString(toprint, i ,2*6,1);
+		
+    }
+		
+
+	pot = GetA2D();
+	if(pot < 204)
+	{
+		currChoice=1;
+	}
+	else if(pot > 204 && pot < 409)
+	{
+		currChoice=2;
+	}
+	else if(pot > 409 && pot < 613)
+	{
+		currChoice=3;
+	}
+	else if(pot > 613 && pot < 818)
+	{
+		currChoice=4;
+	}
+	else if(pot > 818 && pot < 1023)
+	{
+		currChoice=5;
+	}
+
+	if (CheckLRVolt(mTouchReadButton(RA3) == 0))
+		opscreen(currChoice);
+	
+	if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to main menu
+{
+	clearScreen0();
+	return 0;
+}
+/*	z = GetAccVal('z');
+	if(z > 150 || z <  -150) // tilting the device to select executing
+		if ( currChoice != 5)
+			opscreen(currChoice);
+		else
+			subsubMenu1();*/
+		
+ DelayMs(20);
+}
+}
+
 void mainTraverse(int c){
 	switch(c){
 		case 1: subMenu1();break;
-		//case 2: subMenu2();break;
+		case 2: subMenu2();break;
 		//case 3: subMenu3();break;
 		//case 4: subMenu4();break;
 		default: break;
