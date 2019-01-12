@@ -496,7 +496,13 @@ void CheckBMA(){
 void clearScreen(){
 	int i;
 	for(i=1;i<8;i++){
-		oledPutROMString("                      ", i, 0); 
+		oledPutROMString("                                 ", i, 0); 
+	}
+}
+void clearScreen0(){
+	int i;
+	for(i=0;i<8;i++){
+		oledPutROMString("                                 ", i, 0); 
 	}
 }
 void opscreen(int num)
@@ -505,16 +511,19 @@ static char toprint1[24];
 static char toprint2[24];
     int i;
 	unsigned char RA1='1',RA2='2';
+clearScreen0();
 	while(1)
 	{
-		clearScreen();
-    	sprintf(toprint1,"Operation %d has been executed", num);
-    	oledPutString(toprint1, 0, 40,1);  
+    	sprintf(toprint1,"Operation %d done", num);
+    	oledPutString(toprint1, 0, 0,1);  
     	sprintf(toprint2,"Press up to return");
-    	oledPutString(toprint2, 1, 40,1);  
+    	oledPutString(toprint2, 1, 0,1);  
  	
   		if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)
+		{
+			clearScreen0();
 			return 0;
+		}	
 
 
 	}
@@ -526,8 +535,8 @@ void subMenu1()
     int i , z;
 	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
-while(1){
 	clearScreen();
+while(1){
     sprintf(toprint,"Sub menu 1");
     oledPutString(toprint, 0, 0,1);  
    
@@ -578,8 +587,8 @@ void mainMenu()
     int i;
 	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
-while(1){
 	clearScreen();
+while(1){
     sprintf(toprint,"Main menu");
     oledPutString(toprint, 0, 0,1);  
    
