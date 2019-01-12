@@ -499,10 +499,31 @@ void clearScreen(){
 		oledPutROMString("                      ", i, 0); 
 	}
 }
+void opscreen(int num)
+{
+static char toprint1[24];
+static char toprint2[24];
+    int i;
+	unsigned char RA1='1',RA2='2';
+	while(1)
+	{
+		clearScreen();
+    	sprintf(toprint1,"Operation %d has been executed", num);
+    	oledPutString(toprint1, 0, 40,1);  
+    	sprintf(toprint2,"Press up to return");
+    	oledPutString(toprint2, 1, 40,1);  
+ 	
+  		if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)
+			return 0;
+
+
+	}
+}
+
 void subMenu1()
 {
     static char toprint[24];
-    int i;
+    int i , z;
 	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
 while(1){
@@ -513,8 +534,7 @@ while(1){
  	
     for(i=1;i<6;i++)
     {
-		if(i==5) sprintf(toprint, "operation 1");
-	    else sprintf(toprint, "submenu %d",i);
+	    sprintf(toprint, "Execute operation %d",i);
 	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   	else oledPutString(toprint, i ,2*6,1);
 		
@@ -529,10 +549,16 @@ while(1){
 {
  	if(currChoice < 5) currChoice++;
 }
-	if(CheckButtonPressed())
+	//x = GetAccVal('x');
+	if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to main menu
 {
-	mainTraverse(currChoice);
+	return 0;
 }
+	z = GetAccVal('z');
+	if( (z > 150 || z <  -150)) // tilting the device to select, don't like it so much
+	{
+	opscreen(currChoice);
+	}
  DelayMs(20);
 }
 }
