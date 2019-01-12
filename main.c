@@ -518,7 +518,7 @@ clearScreen0();
     	sprintf(toprint,"Press up to return");
     	oledPutString(toprint, 1, 0,1);  
  	
-  		if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1) //problemetic line
+  		if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)
 		{
 			clearScreen0();
 			return 0;
@@ -662,7 +662,7 @@ while(1){
 		currChoice=5;
 	}
 
-	if (CheckLRVolt(mTouchReadButton(RA3) == 0))
+	if (CheckLRVolt(mTouchReadButton(RA3) == 1)) //problemetic line
 		opscreen(currChoice);
 	
 	if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to main menu
