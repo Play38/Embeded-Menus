@@ -528,6 +528,48 @@ clearScreen0();
 	}
 }
 
+void subsubMenu1()
+{
+    int i , z;
+	unsigned char RA1='1',RA2='2';
+	int currChoice=1;
+	clearScreen();
+while(1){
+    sprintf(toprint,"Sub Sub menu 1");
+    oledPutString(toprint, 0, 0,1);  
+   
+ 	
+    for(i=1;i<6;i++)
+    {
+	    sprintf(toprint, "Execute operation %d",i+4);
+	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   	else oledPutString(toprint, i ,2*6,1);
+		
+    }
+		
+
+    if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
+{
+	if(currChoice > 1) currChoice--;
+
+} 
+    if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
+{
+ 	if(currChoice < 5) currChoice++;
+}
+	//x = GetAccVal('x');
+	if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to exit
+{
+	clearScreen0();
+	return 0;
+}
+	z = GetAccVal('z');
+	if(z > 150 || z <  -150) // tilting the device to select executing
+			opscreen(currChoice+4);	
+ DelayMs(20);
+}
+}
+
 void subMenu1()
 {
     int i , z;
@@ -541,11 +583,14 @@ while(1){
  	
     for(i=1;i<6;i++)
     {
-	    sprintf(toprint, "Execute operation %d",i);
+		if(i==5) sprintf(toprint, "SubSubMenu");
+	    else sprintf(toprint, "Execute operation %d",i);
+	 //   sprintf(toprint, "Execute operation %d",i);
 	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   	else oledPutString(toprint, i ,2*6,1);
 		
     }
+		
 
     if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
 {
@@ -559,13 +604,16 @@ while(1){
 	//x = GetAccVal('x');
 	if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to main menu
 {
+	clearScreen0();
 	return 0;
 }
 	z = GetAccVal('z');
-	if( (z > 150 || z <  -150)) // tilting the device to select, don't like it so much
-	{
-	opscreen(currChoice);
-	}
+	if(z > 150 || z <  -150) // tilting the device to select executing
+		if ( currChoice != 5)
+			opscreen(currChoice);
+		else
+			subsubMenu1();
+		
  DelayMs(20);
 }
 }
@@ -584,7 +632,7 @@ void mainMenu()
     int i;
 	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
-	clearScreen();
+	clearScreen0();
 while(1){
     sprintf(toprint,"Main menu");
     oledPutString(toprint, 0, 0,1);  
