@@ -339,6 +339,7 @@ static void InitializeSystem(void)
  *
  * Note:            None
  *******************************************************************/
+static char toprint[24];
 void mainTraverse(int c);
 
 BOOL CheckButtonPressed(void)
@@ -507,17 +508,15 @@ void clearScreen0(){
 }
 void opscreen(int num)
 {
-static char toprint1[24];
-static char toprint2[24];
     int i;
 	unsigned char RA1='1',RA2='2';
 clearScreen0();
 	while(1)
 	{
-    	sprintf(toprint1,"Operation %d done", num);
-    	oledPutString(toprint1, 0, 0,1);  
-    	sprintf(toprint2,"Press up to return");
-    	oledPutString(toprint2, 1, 0,1);  
+    	sprintf(toprint,"Operation %d done", num);
+    	oledPutString(toprint, 0, 0,1);  
+    	sprintf(toprint,"Press up to return");
+    	oledPutString(toprint, 1, 0,1);  
  	
   		if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)
 		{
@@ -531,7 +530,6 @@ clearScreen0();
 
 void subMenu1()
 {
-    static char toprint[24];
     int i , z;
 	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
@@ -583,7 +581,6 @@ void mainTraverse(int c){
 }
 void mainMenu()
 {  
-    static char toprint[24];
     int i;
 	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
