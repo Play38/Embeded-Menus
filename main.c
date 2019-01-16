@@ -403,10 +403,9 @@ int CheckLRVolt(unsigned int x){
 }
  
 void CheckLR(){
-    unsigned char RA0='0',RA3='3';
-    static char toprint[64];
-    sprintf(toprint,"L: %c     R: %c",CheckLRVolt(mTouchReadButton(RA3)),CheckLRVolt(mTouchReadButton(RA0)));
-    oledPutString(toprint,2,0);
+    unsigned char RA0='0',RA3='3';;
+    sprintf(toprint,"L: %d     R: %d",CheckLRVolt(mTouchReadButton(RA3)),CheckLRVolt(mTouchReadButton(RA0)));
+    oledPutString(toprint,5,0,1);
 }
  
 int CheckUDVolt(unsigned int x,unsigned int y){
@@ -662,13 +661,14 @@ while(1){
 		currChoice=5;
 	}
 
-	if (CheckLRVolt(mTouchReadButton(RA3) == 1)) //problemetic line
-		opscreen(currChoice);
-	
-	if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to main menu
+	if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
+{
+	opscreen(currChoice);
+}
+	if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
 {
 	clearScreen0();
-	return 0;
+	return;
 }
 /*	z = GetAccVal('z');
 	if(z > 150 || z <  -150) // tilting the device to select executing
@@ -721,7 +721,7 @@ while(1){
 {
 	mainTraverse(currChoice);
 }
- DelayMs(10);
+ DelayMs(20);
 }
 }
  
