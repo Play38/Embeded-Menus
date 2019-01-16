@@ -344,33 +344,10 @@ void mainTraverse(int c);
 
 BOOL CheckButtonPressed(void)
 {
-    static char buttonPressed = FALSE;
-    static unsigned long buttonPressCounter = 0;
- 
-    if(PORTBbits.RB0 == 0)
-    {
-        if(buttonPressCounter++ >10)
-        {
-            buttonPressCounter = 0;
-            buttonPressed = TRUE;
-        }
-    }
-    else
-    {
-        if(buttonPressed == TRUE)
-        {
-            if(buttonPressCounter == 0)
-            {
-                buttonPressed = FALSE;
-                return TRUE;
-            }
-            else
-            {
-                buttonPressCounter--;
-            }
-        }
-    }
-    return FALSE;
+   if(PORTBbits.RB0 == 0) 
+		return TRUE;
+	else 
+		return FALSE;
 }
  
 int GetA2D(){   //Set ADCON and start input
@@ -667,68 +644,51 @@ void subMenu2() //potenciometer
 	unsigned char RA3='3',RA0='0'; // RA0 is Cancel and RA3 is accept
 	int currChoice=1;
 	clearScreen();
-while(1){
-    sprintf(toprint,"Sub menu 2");
-    oledPutString(toprint, 0, 0,1);  
+	while(1)
+	{
+    	sprintf(toprint,"Sub menu 2");
+    	oledPutString(toprint, 0, 0,1);  
    
  	
-    for(i=1;i<6;i++)
-    {
-		if(i==5) sprintf(toprint, "SubSubMenu");
-	    else sprintf(toprint, "Execute operation %d",i);
-	 //   sprintf(toprint, "Execute operation %d",i);
-	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
-	   	else oledPutString(toprint, i ,2*6,1);
-		
-    }
-		
-
-	pot = GetA2D();
-	if(pot < 204)
-	{
-		currChoice=1;
-	}
-	else if(pot > 204 && pot < 409)
-	{
-		currChoice=2;
-	}
-	else if(pot > 409 && pot < 613)
-	{
-		currChoice=3;
-	}
-	else if(pot > 613 && pot < 818)
-	{
-		currChoice=4;
-	}
-	else if(pot > 818 && pot < 1023)
-	{
-		currChoice=5;
-	}
-
-	if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
-	{
-	clearScreen0();
-	return 0;
-	}
-	if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
-{
-		if ( currChoice != 5)
-			opscreen(currChoice);
-		else
-		{
-			 DelayMs(20);
-			subsubMenu2();
+    	for(i=1;i<6;i++)
+    	{
+			if(i==5) sprintf(toprint, "SubSubMenu");
+	  	 	else sprintf(toprint, "Execute operation %d",i);
+	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);
 		}
-}
-/*	z = GetAccVal('z');
-	if(z > 150 || z <  -150) // tilting the device to select executing
-		if ( currChoice != 5)
-			opscreen(currChoice);
-		else
-			subsubMenu1();*/
 		
- DelayMs(20);
-}
+
+		pot = GetA2D();
+		if(pot < 204)
+			currChoice=1;
+		else if(pot > 204 && pot < 409)
+			currChoice=2;
+		else if(pot > 409 && pot < 613)
+			currChoice=3;
+		else if(pot > 613 && pot < 818)
+			currChoice=4;
+		else if(pot > 818 && pot < 1023)
+			currChoice=5;
+
+		if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
+		{
+		clearScreen0();
+		return 0;
+		}
+		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
+		{
+			if ( currChoice != 5)
+				opscreen(currChoice);
+			else
+			{
+			 	DelayMs(20);
+				subsubMenu2();
+			}
+		}
+		
+ 		DelayMs(20);
+	}
 }
 
 void mainTraverse(int c){
