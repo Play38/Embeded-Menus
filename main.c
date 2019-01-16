@@ -642,7 +642,6 @@ void subMenu2() //potenciometer
 void subMenu3()//scrolling menu
 {
     int i , z,secondrow,thirdrow;
-	int c = 0;
 	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
 	clearScreen();
@@ -656,39 +655,39 @@ void subMenu3()//scrolling menu
     	{
 			if (currChoice < 6)
 			{
-			if (secondrow)	
-			{
-				clearScreen();
-				secondrow = 0;
-			}
-			sprintf(toprint, "Do operation %d",i);
-	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
-	   		else oledPutString(toprint, i ,2*6,1);
+				if (secondrow)	
+				{
+					clearScreen();
+					secondrow = 0;
+				}
+				sprintf(toprint, "Do operation %d",i);
+	    		if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   			else oledPutString(toprint, i ,2*6,1);
 			}
 			
 			if (currChoice <= 11 && currChoice > 6)
 			{
-			if (thirdrow)	
-			{
-				clearScreen();
-				thirdrow = 0;
-			}
+				if (thirdrow)	
+				{
+					clearScreen();
+					thirdrow = 0;
+				}
 			
-			secondrow = 1;
-			sprintf(toprint, "Do operation %d",i+6);
-	    	if(i+6 == currChoice)oledPutString(toprint, i ,2*6,0);
-	   		else oledPutString(toprint, i ,2*6,1);
+				secondrow = 1;
+				sprintf(toprint, "Do operation %d",i+6);
+	    		if(i+6 == currChoice)oledPutString(toprint, i ,2*6,0);
+	   			else oledPutString(toprint, i ,2*6,1);
 			}
 
 			if (currChoice <= 16 && currChoice >= 12)
 			{
-			secondrow = 0;
-			thirdrow = 1;
-			sprintf(toprint, "Do operation %d",i+11);
-	    	if(i+11 == currChoice)oledPutString(toprint, i ,2*6,0);
-	   		else oledPutString(toprint, i ,2*6,1);
+				secondrow = 0;
+				thirdrow = 1;
+				sprintf(toprint, "Do operation %d",i+11);
+	    		if(i+11 == currChoice)oledPutString(toprint, i ,2*6,0);
+	   			else oledPutString(toprint, i ,2*6,1);
 			}
-		
+			
     	}
 		
 
