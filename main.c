@@ -617,6 +617,50 @@ while(1){
 }
 }
 
+
+void subsubMenu2() //potenciometer
+{
+    int i , z, pot;
+	unsigned char RA3='3',RA0='0'; // RA0 is Cancel and RA3 is accept
+	int currChoice=1;
+	clearScreen();
+	while(1)
+	{
+    	sprintf(toprint,"Sub Sub menu 2");
+    	oledPutString(toprint, 0, 0,1);  
+   
+ 	
+    	for(i=1;i<6;i++)
+    	{
+			sprintf(toprint, "Execute operation %d",i+4);
+	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);
+
+	    }
+		
+
+		pot = GetA2D();
+		if(pot < 204)
+			currChoice=1;
+		else if(pot > 204 && pot < 409)
+			currChoice=2;
+		else if(pot > 409 && pot < 613)
+			currChoice=3;
+		else if(pot > 613 && pot < 818)
+			currChoice=4;
+		else if(pot > 818 && pot < 1023)
+			currChoice=5;
+
+		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
+				opscreen(currChoice+4);
+		if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
+		{
+			clearScreen0();
+			return 0;
+		}
+	}
+}
+
 void subMenu2() //potenciometer
 {
     int i , z, pot;
@@ -663,7 +707,10 @@ while(1){
 
 	if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
 {
-	opscreen(currChoice);
+		if ( currChoice != 5)
+			opscreen(currChoice);
+		else
+			subsubMenu2();
 }
 	if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
 {
