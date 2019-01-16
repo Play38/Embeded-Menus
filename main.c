@@ -517,7 +517,7 @@ while(1){
  	
     for(i=1;i<6;i++)
     {
-	    sprintf(toprint, "Execute operation %d",i+4);
+	    sprintf(toprint, "Do operation %d",i+4);
 	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   	else oledPutString(toprint, i ,2*6,1);
 		
@@ -560,8 +560,8 @@ while(1){
     for(i=1;i<6;i++)
     {
 		if(i==5) sprintf(toprint, "SubSubMenu");
-	    else sprintf(toprint, "Execute operation %d",i);
-	 //   sprintf(toprint, "Execute operation %d",i);
+	    else sprintf(toprint, "Do operation %d",i);
+	 //   sprintf(toprint, "Do operation %d",i);
 	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   	else oledPutString(toprint, i ,2*6,1);
 		
@@ -594,50 +594,6 @@ while(1){
 }
 }
 
-
-void subsubMenu2() //potenciometer
-{
-    int i , z, pot;
-	unsigned char RA3='3',RA0='0'; // RA0 is Cancel and RA3 is accept
-	int currChoice=1;
-	clearScreen();
-	while(1)
-	{
-    	sprintf(toprint,"Sub Sub menu 2");
-    	oledPutString(toprint, 0, 0,1);  
-   
- 	
-    	for(i=1;i<6;i++)
-    	{
-			sprintf(toprint, "Execute operation %d",i+4);
-	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
-	   		else oledPutString(toprint, i ,2*6,1);
-
-	    }
-		
-
-		pot = GetA2D();
-		if(pot < 204)
-			currChoice=1;
-		else if(pot > 204 && pot < 409)
-			currChoice=2;
-		else if(pot > 409 && pot < 613)
-			currChoice=3;
-		else if(pot > 613 && pot < 818)
-			currChoice=4;
-		else if(pot > 818 && pot < 1023)
-			currChoice=5;
-
-		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
-				opscreen(currChoice+4);
-		if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return
-		{
-			clearScreen0();
-			return 0;
-		}
-	}
-}
-
 void subMenu2() //potenciometer
 {
     int i , z, pot;
@@ -652,8 +608,7 @@ void subMenu2() //potenciometer
  	
     	for(i=1;i<6;i++)
     	{
-			if(i==5) sprintf(toprint, "SubSubMenu");
-	  	 	else sprintf(toprint, "Execute operation %d",i);
+			sprintf(toprint, "Do operation %d",i);
 	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   		else oledPutString(toprint, i ,2*6,1);
 		}
@@ -677,15 +632,80 @@ void subMenu2() //potenciometer
 		return 0;
 		}
 		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
-		{
-			if ( currChoice != 5)
 				opscreen(currChoice);
-			else
+		
+ 		DelayMs(20);
+	}
+}
+
+
+void subMenu3()//scrolling menu
+{
+    int i , z,secondrow,thirdrow;
+	int c = 0;
+	unsigned char RA1='1',RA2='2';
+	int currChoice=1;
+	clearScreen();
+	while(1)
+	{
+    	sprintf(toprint,"Sub menu 3");
+    	oledPutString(toprint, 0, 0,1);  
+   
+ 	
+    	for(i=1;i<6;i++)
+    	{
+			if (currChoice < 6)
 			{
-			 	DelayMs(20);
-				subsubMenu2();
+			if (secondrow)	
+			{
+				clearScreen();
+				secondrow = 0;
 			}
+			sprintf(toprint, "Do operation %d",i);
+	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);
+			}
+			
+			if (currChoice <= 11 && currChoice > 6)
+			{
+			if (thirdrow)	
+			{
+				clearScreen();
+				thirdrow = 0;
+			}
+			
+			secondrow = 1;
+			sprintf(toprint, "Do operation %d",i+6);
+	    	if(i+6 == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);
+			}
+
+			if (currChoice <= 16 && currChoice >= 12)
+			{
+			secondrow = 0;
+			thirdrow = 1;
+			sprintf(toprint, "Do operation %d",i+11);
+	    	if(i+11 == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);
+			}
+		
+    	}
+		
+
+    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
+			if(currChoice > 1) currChoice--;
+
+    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
+			if(currChoice < 16) currChoice++;
+
+		if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to main menu
+		{
+			clearScreen0();
+			return 0;
 		}
+		z = GetAccVal('z');
+		if(z > 150 || z <  -150) // tilting the device to select executing
+				opscreen(currChoice);
 		
  		DelayMs(20);
 	}
@@ -695,7 +715,7 @@ void mainTraverse(int c){
 	switch(c){
 		case 1: subMenu1();break;
 		case 2: subMenu2();break;
-		//case 3: subMenu3();break;
+		case 3: subMenu3();break;
 		//case 4: subMenu4();break;
 		default: break;
 	}
