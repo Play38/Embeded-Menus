@@ -653,7 +653,7 @@ void subsubMenu2() //potenciometer
 
 		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
 				opscreen(currChoice+4);
-		if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
+		if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return
 		{
 			clearScreen0();
 			return 0;
@@ -705,17 +705,20 @@ while(1){
 		currChoice=5;
 	}
 
+	if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
+	{
+	clearScreen0();
+	return 0;
+	}
 	if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
 {
 		if ( currChoice != 5)
 			opscreen(currChoice);
 		else
+		{
+			 DelayMs(20);
 			subsubMenu2();
-}
-	if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
-{
-	clearScreen0();
-	return;
+		}
 }
 /*	z = GetAccVal('z');
 	if(z > 150 || z <  -150) // tilting the device to select executing
