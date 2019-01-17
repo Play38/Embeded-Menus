@@ -364,15 +364,6 @@ int GetA2D(){   //Set ADCON and start input
     return a2d;
 }
  
-int printPbar(int p){   //Print the potentiometer's bar
-    int x=p/64;
-    int i;
-    for(i=0;i<x;i++){
-        oledPutROMString("=", 0, (i+5)*6);  //Change the output according to the potentiometer's readings
-    }
-    return x;
-}
- 
 int CheckLRVolt(unsigned int x){
     if(x>600)
         return 0;
@@ -386,10 +377,10 @@ void CheckLR(){
 }
  
 int CheckUDVolt(unsigned int x,unsigned int y){
-    if(x<y && y-x>75 && x < 600){
+    if(x<y && y-x>75 && x < 700){
         return 1;       //Up
 	}
-    else if (y<x && x-y>75 && y < 600){ 
+    else if (y<x && x-y>75 && y < 700){ 
 		return 2;}       //Down
    else return 0;   //Not pushed
 }
@@ -523,7 +514,7 @@ while(1){
 		
     }
 		
-
+	
     if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
 {
 	if(currChoice > 1) currChoice--;
@@ -542,7 +533,7 @@ while(1){
 	z = GetAccVal('z');
 	if(z > 150 || z <  -150) // tilting the device to select executing
 			opscreen(currChoice+4);	
- DelayMs(20);
+ DelayMs(30);
 }
 }
 
@@ -590,7 +581,7 @@ while(1){
 		else
 			subsubMenu1();
 		
- DelayMs(20);
+ DelayMs(30);
 }
 }
 
@@ -634,15 +625,15 @@ void subMenu2() //potenciometer
 		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
 				opscreen(currChoice);
 		
- 		DelayMs(20);
+ 		DelayMs(30);
 	}
 }
 
 
 void subMenu3()//scrolling menu
 {
-    int i , z,secondrow,thirdrow;
-	unsigned char RA1='1',RA2='2';
+    int i , z, y,secondrow,thirdrow;
+	unsigned char RA3='3',RA0='0';
 	int currChoice=1;
 	clearScreen();
 	while(1)
@@ -691,22 +682,21 @@ void subMenu3()//scrolling menu
     	}
 		
 
-    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
+    	if(GetAccVal('x') < -12)     //Pressed up           
 			if(currChoice > 1) currChoice--;
 
-    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
+    	if(GetAccVal('x') > 12) //Pressed down
 			if(currChoice < 16) currChoice++;
 
-		if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to main menu
+		if( CheckLRVolt(mTouchReadButton(RA3)) ) // L to return to main menu
 		{
-			clearScreen0();
-			return 0;
+		clearScreen0();
+		return 0;
 		}
-		z = GetAccVal('z');
-		if(z > 150 || z <  -150) // tilting the device to select executing
+		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
 				opscreen(currChoice);
 		
- 		DelayMs(20);
+ 		DelayMs(30);
 	}
 }
 
@@ -715,7 +705,7 @@ void mainTraverse(int c){
 		case 1: subMenu1();break;
 		case 2: subMenu2();break;
 		case 3: subMenu3();break;
-		//case 4: subMenu4();break;
+		case 4: subMenu4();break;
 		default: break;
 	}
 }
@@ -750,7 +740,7 @@ while(1){
 {
 	mainTraverse(currChoice);
 }
- DelayMs(20);
+ DelayMs(30);
 }
 }
  
