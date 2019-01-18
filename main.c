@@ -430,7 +430,7 @@ void putmax(int x,int y){   //Print the accelerometer's max vector values
 void clearScreen(){
 	int i;
 	for(i=1;i<8;i++){
-		oledPutROMString("                                 ", i, 0); 
+		oledPutROMString("                  ", i, 0); 
 	}
 }
 void clearScreen0(){
@@ -550,7 +550,6 @@ void subMenu2() //potenciometer
 	{
     	sprintf(toprint,"Sub menu 2");
     	oledPutString(toprint, 0, 0,1);  
-   
  	
     	for(i=1;i<6;i++)
     	{
@@ -587,15 +586,20 @@ void subMenu2() //potenciometer
 
 void subMenu3()//scrolling menu
 {
-    int i , z, y,secondrow,thirdrow;
+    int i , z, y, secondrow, thirdrow, ldraw;
 	int currChoice=1;
 	clearScreen();
 	while(1)
 	{
     	sprintf(toprint,"Sub menu 3");
     	oledPutString(toprint, 0, 0,1);  
-   
- 	
+   		sprintf(toprint,"|");
+		for(ldraw = 2; ldraw<7 ; ldraw++)
+			oledPutString(toprint, ldraw, 120,1);
+		sprintf(toprint,"^");
+		oledPutString(toprint, 1, 120,1);
+ 		sprintf(toprint,"v");
+		oledPutString(toprint, 7, 120,1);
     	for(i=1;i<6;i++)
     	{
 			if (currChoice < 6)
