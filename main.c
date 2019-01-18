@@ -377,10 +377,10 @@ void CheckLR(){
 }
  
 int CheckUDVolt(unsigned int x,unsigned int y){
-    if(x<y && y-x>75 && x < 700){
+    if(x<y && y-x>75 && x < 900){
         return 1;       //Up
 	}
-    else if (y<x && x-y>75 && y < 700){ 
+    else if (y<x && x-y>75 && y < 800){ 
 		return 2;}       //Down
    else return 0;   //Not pushed
 }
