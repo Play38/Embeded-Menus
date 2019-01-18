@@ -371,11 +371,6 @@ int CheckLRVolt(unsigned int x){
     else return 1;
 }
  
-void CheckLR(){
-    sprintf(toprint,"L: %d     R: %d",CheckLRVolt(mTouchReadButton(RA3)),CheckLRVolt(mTouchReadButton(RA0)));
-    oledPutString(toprint,5,0,1);
-}
- 
 int CheckUDVolt(unsigned int x,unsigned int y){
     if(x<y && y-x>75 && x < 900){
         return 1;       //Up
@@ -387,15 +382,15 @@ int CheckUDVolt(unsigned int x,unsigned int y){
  
  
 int GetAccVal(char c){  //Check the accelerometer's readings
-/*
-x: msb 3 lsb 2
-y: msb 5 lsb 4
-z: msb 7 lsb 6
-*/
-BYTE msb,lsb;
-BYTE mask= 0b10000000;
-int signextend= 0xFC00;//2^15+2^14+2^13+2^12+2^11+2^10+2^9
-int val=0,n1,n2;
+	/*
+	x: msb 3 lsb 2
+	y: msb 5 lsb 4
+	z: msb 7 lsb 6
+	*/
+	BYTE msb,lsb;
+	BYTE mask= 0b10000000;
+	int signextend= 0xFC00;//2^15+2^14+2^13+2^12+2^11+2^10+2^9
+	int val=0,n1,n2;
     if(c=='x'){n1=3;n2=2;}
     if(c=='y'){n1=5;n2=4;}
     if(c=='z'){n1=7;n2=6;}
@@ -430,36 +425,7 @@ void putmax(int x,int y){   //Print the accelerometer's max vector values
     oledPutROMString("o", 6, rowx*6);
     oledPutROMString("o", 7, rowy*6);
 }
-void Checkmaxvals(static int x,static int y){
-    int z;
-    static char toprint[23];
-    z=GetAccVal('z');
-    if(z<0){
-        x=0;
-        y=0;
-    }
-    /*sprintf(toprint,"z%3d",z);
-    oledPutString(toprint,4,0);*/
-    sprintf(toprint,"x ----------------");//line size =16
-    oledPutString(toprint,6,0);
-    sprintf(toprint,"y ----------------");
-    oledPutString(toprint,7,0);
-    putmax(x,y);
-}
-void CheckBMA(){  
-    static char toprint[23];
-    int x,y;
-    BYTE deg;
-    static maxx=0,maxy=0;
-    deg=BMA150_ReadByte(8);
-    x=GetAccVal('x');
-    y=GetAccVal('y');
-    if(truev(x)>maxx) maxx=x;
-    if(truev(y)>maxy) maxy=y;
-    sprintf(toprint,"X:%3d Y:%3d T:%2d~ ",x,y,((deg-32)*5)/9);
-    oledPutString(toprint,5,0);
-    Checkmaxvals(maxx,maxy);
-}
+
  
 void clearScreen(){
 	int i;
