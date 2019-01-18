@@ -406,31 +406,12 @@ int GetAccVal(char c){  //Check the accelerometer's readings
     }
     return val;
 }
-int truev(int x){
-    if(x<0) return -x;
-    else return x;
-}
  
- 
-void putmax(int x,int y){   //Print the accelerometer's max vector values
-    int mx,my;
-    int rowx=8,rowy=8;
-    mx=truev(x)/64;
-    my=truev(y)/64;
-    if(x<0) rowx-=mx;
-    else rowx +=mx;
-    if(y<0) rowy-=my;
-    else rowy +=my;
-   
-    oledPutROMString("o", 6, rowx*6);
-    oledPutROMString("o", 7, rowy*6);
-}
 
- 
 void clearScreen(){
 	int i;
 	for(i=1;i<8;i++){
-		oledPutROMString("                  ", i, 0); 
+		oledPutROMString("                    ", i, 0); 
 	}
 }
 void clearScreen0(){
@@ -442,6 +423,7 @@ void clearScreen0(){
 void opscreen(int num)
 {
     int i;
+	va_list check;
 	clearScreen0();
 	while(1)
 	{
@@ -473,7 +455,7 @@ void subsubMenu1()
  	
     	for(i=1;i<6;i++)
     	{
-	    	sprintf(toprint, "Do operation %d",i+4);
+	    	sprintf(toprint, "Make operation %d",i+4);
 	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   		else oledPutString(toprint, i ,2*6,1);	
     	}
@@ -487,13 +469,13 @@ void subsubMenu1()
 
 		if( GetAccVal('y') > -140 && GetAccVal('y') > 140 ) // shake to return to menu1
 		{
-			DelayMs(30);
+			DelayMs(100);
 			clearScreen0();
 			return 0;
 		}
 		if( CheckLRVolt(mTouchReadButton(RA0))) // tilting the device to select executing
 			opscreen(currChoice+4);	
- 		DelayMs(30);
+ 		DelayMs(60);
 	}
 }
 
@@ -511,7 +493,7 @@ void subMenu1()
     	for(i=1;i<6;i++)
     	{
 			if(i==5) sprintf(toprint, "SubSubMenu");
-	    	else sprintf(toprint, "Do operation %d",i);
+	    	else sprintf(toprint, "Make operation %d",i);
 	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   		else oledPutString(toprint, i ,2*6,1);	
     	}
@@ -533,11 +515,11 @@ void subMenu1()
 				opscreen(currChoice);
 			else
 			{
-				DelayMs(60);
+				DelayMs(100);
 				subsubMenu1();
 			}
 		
- 		DelayMs(30);
+ 		DelayMs(60);
 	}
 }
 
@@ -553,7 +535,7 @@ void subMenu2() //potenciometer
  	
     	for(i=1;i<6;i++)
     	{
-			sprintf(toprint, "Do operation %d",i);
+			sprintf(toprint, "Make operation %d",i);
 	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   		else oledPutString(toprint, i ,2*6,1);
 		}
@@ -579,7 +561,7 @@ void subMenu2() //potenciometer
 		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
 				opscreen(currChoice);
 		
- 		DelayMs(30);
+ 		DelayMs(60);
 	}
 }
 
@@ -609,7 +591,7 @@ void subMenu3()//scrolling menu
 					clearScreen();
 					secondrow = 0;
 				}
-				sprintf(toprint, "Do operation %d",i);
+				sprintf(toprint, "Make operation %d",i);
 	    		if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   			else oledPutString(toprint, i ,2*6,1);
 			}
@@ -623,7 +605,7 @@ void subMenu3()//scrolling menu
 				}
 			
 				secondrow = 1;
-				sprintf(toprint, "Do operation %d",i+6);
+				sprintf(toprint, "Make operation %d",i+6);
 	    		if(i+6 == currChoice)oledPutString(toprint, i ,2*6,0);
 	   			else oledPutString(toprint, i ,2*6,1);
 			}
@@ -632,7 +614,7 @@ void subMenu3()//scrolling menu
 			{
 				secondrow = 0;
 				thirdrow = 1;
-				sprintf(toprint, "Do operation %d",i+11);
+				sprintf(toprint, "Make operation %d",i+11);
 	    		if(i+11 == currChoice)oledPutString(toprint, i ,2*6,0);
 	   			else oledPutString(toprint, i ,2*6,1);
 			}
@@ -654,7 +636,7 @@ void subMenu3()//scrolling menu
 		if( CheckLRVolt(mTouchReadButton(RA0)) ) // R to choose
 				opscreen(currChoice);
 		
- 		DelayMs(30);
+ 		DelayMs(60);
 	}
 }
 
@@ -662,17 +644,17 @@ void subMenu4()
 {
     int i , z;
 	int currChoice=1;
-	DelayMs(50);
+	DelayMs(100);
 	clearScreen();
 	while(1)
 	{
-    	sprintf(toprint,"Sub menu 1");
+    	sprintf(toprint,"Sub menu 4");
     	oledPutString(toprint, 0, 0,1);  
    
  	
     	for(i=1;i<6;i++)
     	{
-			sprintf(toprint, "Do operation %d",i);
+			sprintf(toprint, "Make operation %d",i);
 	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
 	   		else oledPutString(toprint, i ,2*6,1);
     	}
@@ -690,9 +672,12 @@ void subMenu4()
 			return 0;
 		}
 		if(CheckButtonPressed()) // R to choose
+		{
 				opscreen(currChoice);
+				DelayMs(40);
+		}
 		
- 		DelayMs(30);
+ 		DelayMs(60);
 	}
 }
 
@@ -707,7 +692,7 @@ void mainTraverse(int c){
 }
 void mainMenu()
 {  
-    int i;
+    int i, up, down;
 	int currChoice=1;
 	clearScreen0();
 	while(1)
@@ -732,7 +717,7 @@ void mainMenu()
 		if(CheckButtonPressed())
 			mainTraverse(currChoice);
 
- 		DelayMs(30);
+ 		DelayMs(60);
 	}
 }
  
