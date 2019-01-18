@@ -501,40 +501,36 @@ void subsubMenu1()
 	unsigned char RA1='1',RA2='2', RA0='0';
 	int currChoice=1;
 	clearScreen();
-while(1){
-    sprintf(toprint,"Sub Sub menu 1");
-    oledPutString(toprint, 0, 0,1);  
+	while(1)
+	{
+    	sprintf(toprint,"Sub Sub menu 1");
+    	oledPutString(toprint, 0, 0,1);  
    
  	
-    for(i=1;i<6;i++)
-    {
-	    sprintf(toprint, "Do operation %d",i+4);
-	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
-	   	else oledPutString(toprint, i ,2*6,1);
-		
-    }
+    	for(i=1;i<6;i++)
+    	{
+	    	sprintf(toprint, "Do operation %d",i+4);
+	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);	
+    	}
 		
 	
-    if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
-{
-	if(currChoice > 1) currChoice--;
+    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
+			if(currChoice > 1) currChoice--;
+ 
+    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
+ 			if(currChoice < 5) currChoice++;
 
-} 
-    if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
-{
- 	if(currChoice < 5) currChoice++;
-}
-	//x = GetAccVal('x');
-	if( GetAccVal('y') > -140 && GetAccVal('y') > 140 ) // shake to return to menu1
-{
-	DelayMs(30);
-	clearScreen0();
-	return 0;
-}
-	if( CheckLRVolt(mTouchReadButton(RA0))) // tilting the device to select executing
+		if( GetAccVal('y') > -140 && GetAccVal('y') > 140 ) // shake to return to menu1
+		{
+			DelayMs(30);
+			clearScreen0();
+			return 0;
+		}
+		if( CheckLRVolt(mTouchReadButton(RA0))) // tilting the device to select executing
 			opscreen(currChoice+4);	
- DelayMs(30);
-}
+ 		DelayMs(30);
+	}
 }
 
 void subMenu1()
@@ -543,38 +539,33 @@ void subMenu1()
 	unsigned char RA1='1',RA2='2', RA0='0';
 	int currChoice=1;
 	clearScreen();
-while(1){
-    sprintf(toprint,"Sub menu 1");
-    oledPutString(toprint, 0, 0,1);  
+	while(1)
+	{
+    	sprintf(toprint,"Sub menu 1");
+    	oledPutString(toprint, 0, 0,1);  
    
  	
-    for(i=1;i<6;i++)
-    {
-		if(i==5) sprintf(toprint, "SubSubMenu");
-	    else sprintf(toprint, "Do operation %d",i);
-	 //   sprintf(toprint, "Do operation %d",i);
-	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
-	   	else oledPutString(toprint, i ,2*6,1);
-		
-    }
+    	for(i=1;i<6;i++)
+    	{
+			if(i==5) sprintf(toprint, "SubSubMenu");
+	    	else sprintf(toprint, "Do operation %d",i);
+	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);	
+    	}
 		
 
-    if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
-{
-	if(currChoice > 1) currChoice--;
+    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
+			if(currChoice > 1) currChoice--;
 
-} 
-    if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
-{
- 	if(currChoice < 5) currChoice++;
-}
-	//x = GetAccVal('x');
-	if( GetAccVal('y') > -140 && GetAccVal('y') > 140 ) // shake to return to main menu
-{
-	clearScreen0();
-	return 0;
-}
-	if( CheckLRVolt(mTouchReadButton(RA0))) // R to choose
+    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
+ 			if(currChoice < 5) currChoice++;
+
+		if( GetAccVal('y') > -140 && GetAccVal('y') > 140 ) // shake to return to main menu
+		{
+			clearScreen0();
+			return 0;
+		}
+		if( CheckLRVolt(mTouchReadButton(RA0))) // R to choose
 			if ( currChoice != 5)
 				opscreen(currChoice);
 			else
@@ -583,8 +574,8 @@ while(1){
 				subsubMenu1();
 			}
 		
- DelayMs(30);
-}
+ 		DelayMs(30);
+	}
 }
 
 void subMenu2() //potenciometer
@@ -717,33 +708,30 @@ void mainMenu()
 	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
 	clearScreen0();
-while(1){
-    sprintf(toprint,"Main menu");
-    oledPutString(toprint, 0, 0,1);  
+	while(1)
+	{
+    	sprintf(toprint,"Main menu");
+    	oledPutString(toprint, 0, 0,1);  
    
  	
-    for(i=1;i<5;i++)
-    {
-	    sprintf(toprint, "submenu %d",i);
-	    if(i == currChoice)oledPutString(toprint, i ,2*6,0);
-	   	else oledPutString(toprint, i ,2*6,1);
-    }
+    	for(i=1;i<5;i++)
+    	{
+	    	sprintf(toprint, "submenu %d",i);
+	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);
+    	}
 
-    if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
-{
-	if(currChoice > 1) currChoice--;
+    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1)    //Pressed up           
+			if(currChoice > 1) currChoice--;
 
-} 
-    if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
-{
- 	if(currChoice < 4) currChoice++;
-}
-	if(CheckButtonPressed())
-{
-	mainTraverse(currChoice);
-}
- DelayMs(30);
-}
+    	if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==2) //Pressed down
+ 			if(currChoice < 4) currChoice++;
+
+		if(CheckButtonPressed())
+			mainTraverse(currChoice);
+
+ 		DelayMs(30);
+	}
 }
  
 
@@ -752,9 +740,7 @@ void main(void)
     InitializeSystem();
     mainMenu();
     while(1)                            //Main is Usualy an Endless Loop
-    {
- 
-    }      
+    {}      
 }//end main
  
  
