@@ -119,6 +119,7 @@
 //  ========================    Global VARIABLES    ========================
 #pragma udata
 //You can define Global Data Elements here
+unsigned char RA0='0', RA1='1', RA2='2', RA3='3';
  
 //  ========================    PRIVATE PROTOTYPES  ========================
 static void InitializeSystem(void);
@@ -371,7 +372,6 @@ int CheckLRVolt(unsigned int x){
 }
  
 void CheckLR(){
-    unsigned char RA0='0',RA3='3';;
     sprintf(toprint,"L: %d     R: %d",CheckLRVolt(mTouchReadButton(RA3)),CheckLRVolt(mTouchReadButton(RA0)));
     oledPutString(toprint,5,0,1);
 }
@@ -476,8 +476,7 @@ void clearScreen0(){
 void opscreen(int num)
 {
     int i;
-	unsigned char RA1='1',RA2='2';
-clearScreen0();
+	clearScreen0();
 	while(1)
 	{
     	sprintf(toprint,"Operation %d done", num);
@@ -498,7 +497,6 @@ clearScreen0();
 void subsubMenu1()
 {
     int i , z;
-	unsigned char RA1='1',RA2='2', RA0='0';
 	int currChoice=1;
 	clearScreen();
 	while(1)
@@ -536,7 +534,6 @@ void subsubMenu1()
 void subMenu1()
 {
     int i , z;
-	unsigned char RA1='1',RA2='2', RA0='0';
 	int currChoice=1;
 	clearScreen();
 	while(1)
@@ -581,7 +578,6 @@ void subMenu1()
 void subMenu2() //potenciometer
 {
     int i , z, pot;
-	unsigned char RA3='3',RA0='0'; // RA0 is Cancel and RA3 is accept
 	int currChoice=1;
 	clearScreen();
 	while(1)
@@ -626,7 +622,6 @@ void subMenu2() //potenciometer
 void subMenu3()//scrolling menu
 {
     int i , z, y,secondrow,thirdrow;
-	unsigned char RA3='3',RA0='0';
 	int currChoice=1;
 	clearScreen();
 	while(1)
@@ -693,19 +688,56 @@ void subMenu3()//scrolling menu
 	}
 }
 
+void subMenu4()
+{
+    int i , z;
+	int currChoice=1;
+	DelayMs(50);
+	clearScreen();
+	while(1)
+	{
+    	sprintf(toprint,"Sub menu 1");
+    	oledPutString(toprint, 0, 0,1);  
+   
+ 	
+    	for(i=1;i<6;i++)
+    	{
+			sprintf(toprint, "Do operation %d",i);
+	    	if(i == currChoice)oledPutString(toprint, i ,2*6,0);
+	   		else oledPutString(toprint, i ,2*6,1);
+    	}
+		
+
+    	if( CheckLRVolt(mTouchReadButton(RA3)))  // R to go up          
+			if(currChoice > 1) currChoice--;
+
+    	if( CheckLRVolt(mTouchReadButton(RA0))) //L to go down
+ 			if(currChoice < 5) currChoice++;
+
+		if( CheckUDVolt(mTouchReadButton(RA1),mTouchReadButton(RA2))==1) // press up to exit
+		{
+			clearScreen0();
+			return 0;
+		}
+		if(CheckButtonPressed()) // R to choose
+				opscreen(currChoice);
+		
+ 		DelayMs(30);
+	}
+}
+
 void mainTraverse(int c){
 	switch(c){
 		case 1: subMenu1();break;
 		case 2: subMenu2();break;
 		case 3: subMenu3();break;
-		//case 4: subMenu4();break;
+		case 4: subMenu4();break;
 		default: break;
 	}
 }
 void mainMenu()
 {  
     int i;
-	unsigned char RA1='1',RA2='2';
 	int currChoice=1;
 	clearScreen0();
 	while(1)
