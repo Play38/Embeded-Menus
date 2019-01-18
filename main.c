@@ -498,7 +498,7 @@ clearScreen0();
 void subsubMenu1()
 {
     int i , z;
-	unsigned char RA1='1',RA2='2';
+	unsigned char RA1='1',RA2='2', RA0='0';
 	int currChoice=1;
 	clearScreen();
 while(1){
@@ -525,13 +525,13 @@ while(1){
  	if(currChoice < 5) currChoice++;
 }
 	//x = GetAccVal('x');
-	if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to exit
+	if( GetAccVal('y') > -140 && GetAccVal('y') > 140 ) // shake to return to menu1
 {
+	DelayMs(30);
 	clearScreen0();
 	return 0;
 }
-	z = GetAccVal('z');
-	if(z > 150 || z <  -150) // tilting the device to select executing
+	if( CheckLRVolt(mTouchReadButton(RA0))) // tilting the device to select executing
 			opscreen(currChoice+4);	
  DelayMs(30);
 }
@@ -540,7 +540,7 @@ while(1){
 void subMenu1()
 {
     int i , z;
-	unsigned char RA1='1',RA2='2';
+	unsigned char RA1='1',RA2='2', RA0='0';
 	int currChoice=1;
 	clearScreen();
 while(1){
@@ -569,17 +569,19 @@ while(1){
  	if(currChoice < 5) currChoice++;
 }
 	//x = GetAccVal('x');
-	if( GetAccVal('x') > 60 && GetAccVal('y') > 60 ) // shake to return to main menu
+	if( GetAccVal('y') > -140 && GetAccVal('y') > 140 ) // shake to return to main menu
 {
 	clearScreen0();
 	return 0;
 }
-	z = GetAccVal('z');
-	if(z > 150 || z <  -150) // tilting the device to select executing
-		if ( currChoice != 5)
-			opscreen(currChoice);
-		else
-			subsubMenu1();
+	if( CheckLRVolt(mTouchReadButton(RA0))) // R to choose
+			if ( currChoice != 5)
+				opscreen(currChoice);
+			else
+			{
+				DelayMs(60);
+				subsubMenu1();
+			}
 		
  DelayMs(30);
 }
@@ -705,7 +707,7 @@ void mainTraverse(int c){
 		case 1: subMenu1();break;
 		case 2: subMenu2();break;
 		case 3: subMenu3();break;
-		case 4: subMenu4();break;
+		//case 4: subMenu4();break;
 		default: break;
 	}
 }
